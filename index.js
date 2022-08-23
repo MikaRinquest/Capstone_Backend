@@ -1,30 +1,31 @@
 // Importing dependencies
 const express = require("express");
 const cors = require("cors");
-const route = express();
+const app = express();
 // Importing routes
+const usersRoute = require("./routes/usersRoute");
 
 // Setting up the API
-route.set("port", process.env.PORT || 3000);
-route.use(express.json());
-route.use(cors());
+app.set("port", process.env.PORT || 8008);
+app.use(express.json());
+app.use(cors());
 
 // Where to access the localhost
-route.listen(route.get("port"), (req, res) => {
+app.listen(app.get("port"), (req, res) => {
   console.log("Connection to server has been established");
-  console.log(`Access port at localhost:${route.get("port")}`);
+  console.log(`Access port at localhost:${app.get("port")}`);
   console.log("Press Ctrl + C to cut connection to the server.");
 });
 
 // Home page on heroku
-route.get("/", (req, res) => {
+app.get("/", (req, res) => {
   res.json({
     Server: "Connection has been successful",
   });
 });
 
 // Setting routes
-
+app.use("/users", usersRoute);
 // Allowing live link to access api
 // app.use(
 //   cors({
