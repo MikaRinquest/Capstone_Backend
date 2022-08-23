@@ -5,7 +5,7 @@ const route = express();
 // Importing routes
 
 // Setting up the API
-route.set("port", process.env.DB_PORT || 3000);
+route.set("port", process.env.PORT || 3000);
 route.use(express.json());
 route.use(cors());
 
