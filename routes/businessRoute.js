@@ -6,11 +6,9 @@ const jwt = require("jsonwebtoken");
 // const controller = require("../Controllers/getFunctions");
 // const middleware = require("../middleware/auth");
 
-// USER FUNCTIONS
-
-// Get all business
-router.get("/", (req, res) => {
-  let sql = "SELECT * FROM business";
+// Get one business
+router.get("/:id", (req, res) => {
+  let sql = `SELECT * FROM business WHERE b_id = ${req.params.id}`;
   try {
     con.query(sql, (err, result) => {
       if (err) throw err;

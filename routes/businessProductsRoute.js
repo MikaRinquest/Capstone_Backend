@@ -4,9 +4,10 @@ const con = require("../library/db_connect");
 
 // Get all products
 router.get("/", (req, res) => {
-  let sql = "SELECT * FROM products";
+  let sql = "SELECT * FROM products WHERE ?";
+  let products = { b_id: req.body.id };
   try {
-    con.query(sql, (err, result) => {
+    con.query(sql, products, (err, result) => {
       if (err) throw err;
       res.send(result);
     });
