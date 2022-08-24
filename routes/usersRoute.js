@@ -205,11 +205,11 @@ router.post("/:id/cart", (req, res) => {
 // Delete from cart
 router.delete("/:id/cart/:id", (req, res) => {
   try {
-    let sql = "DELETE FROM cart SET ?";
+    let sql = "DELETE FROM cart WHERE ?";
     let cart = {
       cart_id: req.params.cart_id,
     };
-    con.query(sql, user, (err, result) => {
+    con.query(sql, cart, (err, result) => {
       if (err) throw err;
       res.send("Item has been removed");
     });
