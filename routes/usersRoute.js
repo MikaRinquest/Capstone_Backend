@@ -28,7 +28,11 @@ router.get("/:id", (req, res) => {
   try {
     con.query(sql, (err, result) => {
       if (err) throw err;
-      res.send(result);
+      if (result.length !== 0) {
+        res.send(result);
+      } else {
+        res.send("This user does not exist");
+      }
     });
   } catch (error) {
     console.log(error);
@@ -130,7 +134,11 @@ router.delete("/:id", (req, res) => {
     let sql = `DELETE FROM users WHERE user_id = ${req.params.id}`;
     con.query(sql, (err, result) => {
       if (err) throw err;
-      res.send("This user's account has been successfully deleted.");
+      if (result.length !== 0) {
+        res.send("This user's account has been successfully deleted.");
+      } else {
+        res.send("This user already does not exist");
+      }
     });
   } catch (error) {
     console.log(error);
@@ -139,16 +147,16 @@ router.delete("/:id", (req, res) => {
 });
 
 // Edit a user
-router.patch("/:id", (req, res) => {
+router.put("/:id", (req, res) => {
   try {
     let sql = "UPDATE users SET ?";
-    const { f_name, l_name, email, password, address, u_img } = req.body;
+    const { f_name, l_name, password, address, u_img } = req.body;
 
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
 
-    let user = { f_name, l_name, email, password: hash, address, u_img };
-    con.query(sql, user, (err, result) => {
+    let user = { f_name, l_name, password: hash, address, u_img };
+    con.query(sql, user, (err) => {
       if (err) throw err;
       res.send(user);
     });
@@ -166,7 +174,11 @@ router.get("/:id/cart", (req, res) => {
     let sql = "SELECT * FROM cart";
     con.query(sql, (err, result) => {
       if (err) throw err;
-      res.send(result);
+      if (result.length !== 0) {
+        res.send(result);
+      } else {
+        res.send("The cart is empty");
+      }
     });
   } catch (error) {
     console.log(error);
@@ -191,8 +203,47 @@ router.post("/:id/cart", (req, res) => {
 });
 
 // Delete from cart
+router.delete("/:id/cart/:id", (req, res) => {
+  try {
+    let sql = "DELETE FROM cart SET ?";
+    let cart = {
+      cart_id: req.params.cart_id,
+    };
+    con.query(sql, user, (err, result) => {
+      if (err) throw err;
+      res.send("Item has been removed");
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
 
 // Change quantity
+router.patch("/:id/cart/:id", (req, res) => {
+  try {
+    let sql = "UPDATE cart SET ?";
+    let cart = {
+      quantity: req.body.quantity,
+    };
+    con.query(sql, cart, (err, result) => {
+      if (err) throw err;
+      res.send("Amount has been updated.");
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
+
+// Clear cart
+router.delete("/:id/cart", (req, res) => {
+  let sql = "TRUNCATE TABLE cart";
+  con.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send("Cart has been cleared");
+  });
+});
 
 module.exports = router;
 
