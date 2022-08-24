@@ -8,9 +8,9 @@ const jwt = require("jsonwebtoken");
 
 // USER FUNCTIONS
 
-// Get all users
+// Get all business
 router.get("/", (req, res) => {
-  let sql = "SELECT * FROM users";
+  let sql = "SELECT * FROM business";
   try {
     con.query(sql, (err, result) => {
       if (err) throw err;
@@ -22,28 +22,10 @@ router.get("/", (req, res) => {
   }
 });
 
-// Get one user
-router.get("/:id", (req, res) => {
-  let sql = `SELECT * FROM users WHERE user_id = ${req.params.id}`;
-  try {
-    con.query(sql, (err, result) => {
-      if (err) throw err;
-      if (result.length !== 0) {
-        res.send(result);
-      } else {
-        res.send("This user does not exist");
-      }
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
-  }
-});
-
-// Register a user
+// Register a business
 router.post("/register", (req, res) => {
   try {
-    let sql = "INSERT INTO users SET ?";
+    let sql = "INSERT INTO business SET ?";
     const { f_name, l_name, email, password, address, u_img } = req.body;
     // Start encrypting
     const salt = bcrypt.genSaltSync(10);
@@ -70,7 +52,7 @@ router.post("/register", (req, res) => {
 // Login a user
 router.post("/login", (req, res) => {
   try {
-    let sql = "SELECT * FROM users WHERE ?";
+    let sql = "SELECT * FROM business WHERE ?";
     let user = { email: req.body.email };
 
     con.query(sql, user, async (err, result) => {
@@ -87,7 +69,7 @@ router.post("/login", (req, res) => {
         } else {
           const payload = {
             user: {
-              user_id: result[0].user_id,
+              b_id: result[0].b_id,
               f_name: result[0].f_name,
               l_name: result[0].type,
               email: result[0].email,
@@ -131,7 +113,7 @@ router.get("/user/verify", (req, res) => {
 // Delete a user
 router.delete("/:id", (req, res) => {
   try {
-    let sql = `DELETE FROM users WHERE user_id = ${req.params.id}`;
+    let sql = `DELETE FROM business WHERE b_id = ${req.params.id}`;
     con.query(sql, (err, result) => {
       if (err) throw err;
       if (result.length !== 0) {
@@ -149,7 +131,7 @@ router.delete("/:id", (req, res) => {
 // Edit a user
 router.put("/:id", (req, res) => {
   try {
-    let sql = "UPDATE users SET ?";
+    let sql = "UPDATE business SET ?";
     const { f_name, l_name, password, address, u_img } = req.body;
 
     const salt = bcrypt.genSaltSync(10);
