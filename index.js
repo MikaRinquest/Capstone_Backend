@@ -15,6 +15,9 @@ app.set("port", process.env.PORT || 8008);
 app.use(express.json());
 app.use(cors());
 
+// Setting home route as static
+app.use(express.static("public"));
+
 // Where to access the localhost
 app.listen(app.get("port"), (req, res) => {
   console.log("Connection to server has been established");
@@ -23,10 +26,8 @@ app.listen(app.get("port"), (req, res) => {
 });
 
 // Home page on heroku
-app.get("/", (req, res) => {
-  res.json({
-    Server: "Connection has been successful",
-  });
+app.get("/", function (req, res) {
+  res.sendFile(__dirname + "/" + "index.html");
 });
 
 // Setting routes

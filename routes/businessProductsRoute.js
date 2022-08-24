@@ -3,7 +3,7 @@ const router = express.Router();
 const con = require("../library/db_connect");
 
 // Get all products
-router.get("/", (req, res) => {
+router.get("/products/", (req, res) => {
   let sql = "SELECT * FROM products WHERE ?";
   let products = { b_id: req.body.id };
   try {
@@ -18,7 +18,7 @@ router.get("/", (req, res) => {
 });
 
 // Get one product
-router.get("/:id", (req, res) => {
+router.get("/products/:id", (req, res) => {
   let sql = `SELECT * FROM products WHERE p_id = ${req.params.id}`;
   try {
     con.query(sql, (err, result) => {
@@ -36,7 +36,7 @@ router.get("/:id", (req, res) => {
 });
 
 // Add a product
-router.post("/", (req, res) => {
+router.post("/products/", (req, res) => {
   try {
     let sql = "INSERT INTO products SET ?";
     let { name, p_img, description, price, p_type, b_id } = req.body;
@@ -52,7 +52,7 @@ router.post("/", (req, res) => {
 });
 
 // Delete a product
-router.delete("/:id", (req, res) => {
+router.delete("/products/:id", (req, res) => {
   try {
     let sql = `DELETE FROM products WHERE p_id = ${req.params.id}`;
     con.query(sql, (err, result) => {
@@ -70,7 +70,7 @@ router.delete("/:id", (req, res) => {
 });
 
 // Edit a product
-router.put("/:id", (req, res) => {
+router.put("/products/:id", (req, res) => {
   try {
     let sql = "UPDATE products SET ?";
     const { name, p_img, description, price, p_type } = req.body;

@@ -97,7 +97,7 @@ router.post("/login", (req, res) => {
 });
 
 // Verify a user
-router.get("/user/verify", (req, res) => {
+router.get("/business/verify", (req, res) => {
   const token = req.header("x-auth-token");
   jwt.verify(token, process.env.jwtSecret, (error, decodedToken) => {
     if (error) {
