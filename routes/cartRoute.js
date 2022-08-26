@@ -23,10 +23,14 @@ router.get("/:id/cart", (req, res) => {
 // Add to cart
 router.post("/:id/cart", (req, res) => {
   try {
-    let sql = "INSERT INTO users SET ?";
-    const { user_id, quantity, cart_item } = req.body;
-    let user = { user_id, quantity, cart_item };
-    con.query(sql, user, (err, result) => {
+    let sql = "INSERT INTO cart SET ?";
+    const { user_id, cart_item } = req.body;
+    let jsonCart = JSON.stringify(cart_item);
+    let cart = {
+      user_id,
+      cart_item: jsonCart,
+    };
+    con.query(sql, cart, (err, result) => {
       if (err) throw err;
       res.send("Item has successfully been added to cart.");
     });
@@ -41,7 +45,7 @@ router.delete("/:id/cart/:id", (req, res) => {
   try {
     let sql = "DELETE FROM cart WHERE ?";
     let cart = {
-      cart_id: req.params.cart_id,
+      cart_id: req.params.id,
     };
     con.query(sql, cart, (err, result) => {
       if (err) throw err;
@@ -56,7 +60,7 @@ router.delete("/:id/cart/:id", (req, res) => {
 // Change quantity
 router.patch("/:id/cart/:id", (req, res) => {
   try {
-    let sql = "UPDATE cart SET ?";
+    let sql = `UPDATE cart SET ? where cart_id = ${req.params.id}`;
     let cart = {
       quantity: req.body.quantity,
     };
