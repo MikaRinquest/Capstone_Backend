@@ -6,6 +6,20 @@ const jwt = require("jsonwebtoken");
 // const controller = require("../Controllers/getFunctions");
 // const middleware = require("../middleware/auth");
 
+// Get all businesses
+router.get("/", (req, res) => {
+  let sql = `SELECT * FROM business`;
+  try {
+    con.query(sql, (err, result) => {
+      if (err) throw err;
+      res.send(result);
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
+
 // Get one business
 router.get("/:id", (req, res) => {
   let sql = `SELECT * FROM business WHERE b_id = ${req.params.id}`;
@@ -24,22 +38,20 @@ router.get("/:id", (req, res) => {
 router.post("/register", (req, res) => {
   try {
     let sql = "INSERT INTO business SET ?";
-    const { f_name, l_name, email, password, address, u_img } = req.body;
+    const { b_name, phone, email, password } = req.body;
     // Start encrypting
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
 
-    let user = {
-      f_name,
-      l_name,
+    let business = {
+      b_name,
+      phone,
       email,
       password: hash,
-      address,
-      u_img,
     };
-    con.query(sql, user, (err, result) => {
+    con.query(sql, business, (err, result) => {
       if (err) throw err;
-      res.send(`User ${user.f_name} was created.`);
+      res.send(`Business ${business.b_name} was created.`);
     });
   } catch (error) {
     console.log(error);
@@ -47,13 +59,13 @@ router.post("/register", (req, res) => {
   }
 });
 
-// Login a user
+// Login a business
 router.post("/login", (req, res) => {
   try {
     let sql = "SELECT * FROM business WHERE ?";
-    let user = { email: req.body.email };
+    let business = { email: req.body.email };
 
-    con.query(sql, user, async (err, result) => {
+    con.query(sql, business, async (err, result) => {
       if (err) throw err;
       if (result.length === 0) {
         res.send("Email does not exist, please register.");
@@ -66,7 +78,7 @@ router.post("/login", (req, res) => {
           res.send("Password is incorrect");
         } else {
           const payload = {
-            user: {
+            business: {
               b_id: result[0].b_id,
               f_name: result[0].f_name,
               l_name: result[0].type,
@@ -96,7 +108,7 @@ router.post("/login", (req, res) => {
   }
 });
 
-// Verify a user
+// Verify a business
 router.get("/business/verify", (req, res) => {
   const token = req.header("x-auth-token");
   jwt.verify(token, process.env.jwtSecret, (error, decodedToken) => {
@@ -108,16 +120,17 @@ router.get("/business/verify", (req, res) => {
     }
   });
 });
-// Delete a user
+
+// Delete a business
 router.delete("/:id", (req, res) => {
   try {
     let sql = `DELETE FROM business WHERE b_id = ${req.params.id}`;
     con.query(sql, (err, result) => {
       if (err) throw err;
       if (result.length !== 0) {
-        res.send("This user's account has been successfully deleted.");
+        res.send("This business's account has been successfully deleted.");
       } else {
-        res.send("This user already does not exist");
+        res.send("This business already does not exist");
       }
     });
   } catch (error) {
@@ -126,19 +139,25 @@ router.delete("/:id", (req, res) => {
   }
 });
 
-// Edit a user
+// Edit a business
 router.put("/:id", (req, res) => {
   try {
-    let sql = "UPDATE business SET ?";
-    const { f_name, l_name, password, address, u_img } = req.body;
+    let sql = `UPDATE business SET ? where b_id = ${req.params.id}`;
+    const { b_name, phone, email, password, b_img } = req.body;
 
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
 
-    let user = { f_name, l_name, password: hash, address, u_img };
-    con.query(sql, user, (err) => {
+    let business = {
+      b_name,
+      phone,
+      email,
+      password: hash,
+      b_img,
+    };
+    con.query(sql, business, (err) => {
       if (err) throw err;
-      res.send(user);
+      res.send(business);
     });
   } catch (error) {
     console.log(error);

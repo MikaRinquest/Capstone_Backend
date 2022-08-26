@@ -3,11 +3,10 @@ const router = express.Router();
 const con = require("../library/db_connect");
 
 // Get all products
-router.get("/products/", (req, res) => {
-  let sql = "SELECT * FROM products WHERE ?";
-  let products = { b_id: req.body.id };
+router.get("/:id/products/", (req, res) => {
+  let sql = `SELECT * FROM products WHERE b_id = "${req.body.b_id}"`;
   try {
-    con.query(sql, products, (err, result) => {
+    con.query(sql, (err, result) => {
       if (err) throw err;
       res.send(result);
     });
@@ -18,7 +17,7 @@ router.get("/products/", (req, res) => {
 });
 
 // Get one product
-router.get("/products/:id", (req, res) => {
+router.get("/:id/products/:id", (req, res) => {
   let sql = `SELECT * FROM products WHERE p_id = ${req.params.id}`;
   try {
     con.query(sql, (err, result) => {
@@ -36,7 +35,7 @@ router.get("/products/:id", (req, res) => {
 });
 
 // Add a product
-router.post("/products/", (req, res) => {
+router.post("/:id/products/", (req, res) => {
   try {
     let sql = "INSERT INTO products SET ?";
     let { name, p_img, description, price, p_type, b_id } = req.body;
@@ -52,7 +51,7 @@ router.post("/products/", (req, res) => {
 });
 
 // Delete a product
-router.delete("/products/:id", (req, res) => {
+router.delete("/:id/products/:id", (req, res) => {
   try {
     let sql = `DELETE FROM products WHERE p_id = ${req.params.id}`;
     con.query(sql, (err, result) => {
@@ -70,9 +69,9 @@ router.delete("/products/:id", (req, res) => {
 });
 
 // Edit a product
-router.put("/products/:id", (req, res) => {
+router.patch("/:id/products/:id", (req, res) => {
   try {
-    let sql = "UPDATE products SET ?";
+    let sql = `UPDATE products SET ? WHERE p_id = ${req.params.id}`;
     const { name, p_img, description, price, p_type } = req.body;
     let product = { name, p_img, description, price, p_type };
     con.query(sql, product, (err) => {
@@ -84,5 +83,23 @@ router.put("/products/:id", (req, res) => {
     res.status(400).send(error);
   }
 });
+
+// Delete all products related to that business (must be tested)
+// router.delete("/products/:id", (req, res) => {
+//   try {
+//     let sql = `DELETE FROM products WHERE b_id = ${req.body.id}`;
+//     con.query(sql, (err, result) => {
+//       if (err) throw err;
+//       if (result.length !== 0) {
+//         res.send("This product has been deleted.");
+//       } else {
+//         res.send("This product already does not exist");
+//       }
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(400).send(error);
+//   }
+// });
 
 module.exports = router;

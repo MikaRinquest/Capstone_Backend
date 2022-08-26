@@ -1,0 +1,25 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.holder {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.container {
+  width: 45vw;
+  margin: 25px;
+}
+
+.table {
+  border: 1px solid black;
+}
+
+th,
+td {
+  border: 1px solid black;
+  padding: 2px;
+}
