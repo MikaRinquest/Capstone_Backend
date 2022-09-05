@@ -71,8 +71,8 @@ router.post("/register", (req, res) => {
 router.post("/login", (req, res) => {
   try {
     let sql = "SELECT * FROM users WHERE ?";
-    let { email, password } = req.body;
-    let user = { email, password };
+    
+    let user = { email: req.body.email };
 
     con.query(sql, user, async (err, result) => {
       if (err) throw err;
