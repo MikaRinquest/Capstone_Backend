@@ -80,13 +80,12 @@ router.post("/login", (req, res) => {
           const payload = {
             business: {
               b_id: result[0].b_id,
-              f_name: result[0].f_name,
-              l_name: result[0].type,
+              b_name: result[0].b_name,
               email: result[0].email,
               password: result[0].password,
-              address: result[0].address,
-              u_img: result[0].u_img,
-              u_type: result[0].u_type,
+              phone: result[0].phone,
+              b_img: result[0].b_img,
+              b_type: result[0].b_type,
             },
           };
           jwt.sign(
@@ -166,12 +165,3 @@ router.put("/:id", (req, res) => {
 });
 
 module.exports = router;
-
-// {
-//       "f_name":"Mika",
-//       "l_name":"Rinquest",
-//       "email":"mika@gmail.com",
-//       "password": "dog",
-//       "address":"home",
-//       "u_img":"https://picsum.photos/200"
-//     }
