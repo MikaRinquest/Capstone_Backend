@@ -44,7 +44,7 @@ router.get("/:id", (req, res) => {
 router.post("/register", (req, res) => {
   try {
     let sql = "INSERT INTO users SET ?";
-    const { f_name, l_name, email, password, address, u_img } = req.body;
+    const { f_name, l_name, email, password, address } = req.body;
     // Start encrypting
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
@@ -55,7 +55,6 @@ router.post("/register", (req, res) => {
       email,
       password: hash,
       address,
-      u_img,
     };
     con.query(sql, user, (err, result) => {
       if (err) throw err;
@@ -71,7 +70,7 @@ router.post("/register", (req, res) => {
 router.post("/login", (req, res) => {
   try {
     let sql = "SELECT * FROM users WHERE ?";
-    
+
     let user = { email: req.body.email };
 
     con.query(sql, user, async (err, result) => {
