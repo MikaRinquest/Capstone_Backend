@@ -51,7 +51,7 @@ router.post("/register", (req, res) => {
     };
     con.query(sql, business, (err, result) => {
       if (err) throw err;
-      res.send(`Business ${business.b_name} was created.`);
+      res.send({ msg: `Business ${business.b_name} was created.` });
     });
   } catch (error) {
     console.log(error);

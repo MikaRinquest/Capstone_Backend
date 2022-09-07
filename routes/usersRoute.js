@@ -58,7 +58,7 @@ router.post("/register", (req, res) => {
     };
     con.query(sql, user, (err, result) => {
       if (err) throw err;
-      res.send(`User ${user.f_name} was created.`);
+      res.send({ msg: `User ${user.f_name} was created.` });
     });
   } catch (error) {
     console.log(error);
