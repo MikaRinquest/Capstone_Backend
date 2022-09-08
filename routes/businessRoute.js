@@ -51,7 +51,7 @@ router.post("/register", (req, res) => {
     };
     con.query(sql, business, (err, result) => {
       if (err) throw err;
-      res.send({ msg: `Business ${business.b_name} was created.` });
+      res.json({ msg: `Business ${business.b_name} was created.` });
     });
   } catch (error) {
     console.log(error);
@@ -68,14 +68,14 @@ router.post("/login", (req, res) => {
     con.query(sql, business, async (err, result) => {
       if (err) throw err;
       if (result.length === 0) {
-        res.send("Email does not exist, please register.");
+        res.json({ msg: "Email does not exist, please register." });
       } else {
         const isMatch = await bcrypt.compare(
           req.body.password,
           result[0].password
         );
         if (!isMatch) {
-          res.send("Password is incorrect");
+          res.json({ msg: "Password is incorrect" });
         } else {
           const payload = {
             business: {
@@ -127,9 +127,9 @@ router.delete("/:id", (req, res) => {
     con.query(sql, (err, result) => {
       if (err) throw err;
       if (result.length !== 0) {
-        res.send("This business's account has been successfully deleted.");
+        res.json("This business's account has been successfully deleted.");
       } else {
-        res.send("This business already does not exist");
+        res.json("This business already does not exist");
       }
     });
   } catch (error) {

@@ -7,8 +7,7 @@ const app = express();
 const usersRoute = require("./routes/usersRoute");
 const cartRoute = require("./routes/cartRoute");
 const businessRoute = require("./routes/businessRoute");
-const userProductsRoute = require("./routes/userProductsRoute");
-const businessProductRoute = require("./routes/businessProductsRoute");
+const productsRoute = require("./routes/productsRoute");
 
 // Setting up the API
 app.set("port", process.env.PORT || 8008);
@@ -32,9 +31,7 @@ app.get("/", function (req, res) {
 
 // Setting routes
 app.use("/users", usersRoute, cartRoute);
-app.use("/products", userProductsRoute);
-app.use("/business", businessRoute, businessProductRoute);
+app.use("/products", productsRoute);
+app.use("/business", businessRoute);
 
 // Allowing live link to access api
-
-

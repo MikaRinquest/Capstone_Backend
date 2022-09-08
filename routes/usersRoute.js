@@ -31,7 +31,7 @@ router.get("/:id", (req, res) => {
       if (result.length !== 0) {
         res.send(result);
       } else {
-        res.send("This user does not exist");
+        res.json("This user does not exist");
       }
     });
   } catch (error) {
@@ -58,7 +58,7 @@ router.post("/register", (req, res) => {
     };
     con.query(sql, user, (err, result) => {
       if (err) throw err;
-      res.send({ msg: `User ${user.f_name} was created.` });
+      res.json({ msg: `User ${user.f_name} was created.` });
     });
   } catch (error) {
     console.log(error);
@@ -76,14 +76,14 @@ router.post("/login", (req, res) => {
     con.query(sql, user, async (err, result) => {
       if (err) throw err;
       if (result.length === 0) {
-        res.send("Email does not exist, please register.");
+        res.json({ msg: "Email does not exist, please register." });
       } else {
         const isMatch = await bcrypt.compare(
           req.body.password,
           result[0].password
         );
         if (!isMatch) {
-          res.send("Password is incorrect");
+          res.json({ msg: "Password is incorrect" });
         } else {
           const payload = {
             user: {
@@ -136,9 +136,9 @@ router.delete("/:id", (req, res) => {
     con.query(sql, (err, result) => {
       if (err) throw err;
       if (result.length !== 0) {
-        res.send("This user's account has been successfully deleted.");
+        res.json("This user's account has been successfully deleted.");
       } else {
-        res.send("This user already does not exist");
+        res.json("This user already does not exist");
       }
     });
   } catch (error) {

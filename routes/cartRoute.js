@@ -11,7 +11,7 @@ router.get("/:id/cart", (req, res) => {
       if (result.length !== 0) {
         res.send(result);
       } else {
-        res.send("The cart is empty");
+        res.json("The cart is empty");
       }
     });
   } catch (error) {
@@ -32,7 +32,7 @@ router.post("/:id/cart", (req, res) => {
     };
     con.query(sql, cart, (err, result) => {
       if (err) throw err;
-      res.send("Item has successfully been added to cart.");
+      res.json("Item has successfully been added to cart.");
     });
   } catch (error) {
     console.log(error);
@@ -49,7 +49,7 @@ router.delete("/:id/cart/:id", (req, res) => {
     };
     con.query(sql, cart, (err, result) => {
       if (err) throw err;
-      res.send("Item has been removed");
+      res.json("Item has been removed");
     });
   } catch (error) {
     console.log(error);
@@ -66,7 +66,7 @@ router.patch("/:id/cart/:id", (req, res) => {
     };
     con.query(sql, cart, (err, result) => {
       if (err) throw err;
-      res.send("Amount has been updated.");
+      res.json("Amount has been updated.");
     });
   } catch (error) {
     console.log(error);
@@ -79,7 +79,7 @@ router.delete("/:id/cart", (req, res) => {
   let sql = "TRUNCATE TABLE cart";
   con.query(sql, (err, result) => {
     if (err) throw err;
-    res.send("Cart has been cleared");
+    res.json("Cart has been cleared");
   });
 });
 
