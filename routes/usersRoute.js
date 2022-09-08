@@ -89,7 +89,7 @@ router.post("/login", (req, res) => {
             user: {
               user_id: result[0].user_id,
               f_name: result[0].f_name,
-              l_name: result[0].type,
+              l_name: result[0].l_name,
               email: result[0].email,
               password: result[0].password,
               address: result[0].address,
