@@ -19,8 +19,9 @@ router.get("/", (req, res) => {
 // Get all products related to the business
 router.get("/product", (req, res) => {
   let sql = `SELECT * FROM products WHERE b_id = ${req.body.b_id}`;
+  let products = { b_id: req.body.b_id };
   try {
-    con.query(sql, (err, result) => {
+    con.query(sql, products, (err, result) => {
       if (err) throw err;
       if (result.length === 0) {
         res.json({ msg: "This business id does not exist" });

@@ -130,10 +130,11 @@ router.get("/user/verify", (req, res) => {
 });
 
 // Delete a user
-router.delete("/:id", (req, res) => {
+router.delete("/", (req, res) => {
   try {
-    let sql = `DELETE FROM users WHERE user_id = ${req.params.id}`;
-    con.query(sql, (err, result) => {
+    let sql = `DELETE FROM users WHERE user_id = ${req.body.user_id}`;
+    let user = { user_id: req.body.user_id };
+    con.query(sql, user, (err, result) => {
       if (err) throw err;
       if (result.length !== 0) {
         res.json("This user's account has been successfully deleted.");
@@ -148,18 +149,15 @@ router.delete("/:id", (req, res) => {
 });
 
 // Edit a user
-router.put("/:id", (req, res) => {
+router.patch("/", (req, res) => {
   try {
-    let sql = `UPDATE users SET ? WHERE user_id= ${req.params.id}`;
-    const { f_name, l_name, password, address, u_img } = req.body;
-
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(password, salt);
+    let sql = `UPDATE users SET ? WHERE user_id= ${req.body.user_id}`;
+    const { user_id, f_name, l_name, address, u_img } = req.body;
 
     let user = {
+      user_id,
       f_name,
       l_name,
-      password: hash,
       address,
       u_img,
     };
