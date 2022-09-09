@@ -17,11 +17,12 @@ router.get("/", (req, res) => {
 });
 
 // Get all products related to the business
-router.get("/product", (req, res) => {
-  let sql = `SELECT * FROM products WHERE b_id = ${req.body.b_id}`;
-  let products = { b_id: req.body.b_id };
+router.get("/product/:id", (req, res) => {
+  // let sql = `SELECT * FROM products WHERE b_id = ${req.params.b_id}`;
+  // let products = { b_id: req.body.b_id };
+  let sql = `SELECT b.b_id, p.* from business b INNER JOIN products p on b.b_id = p.b_id where b.b_id = ${req.params.id}`;
   try {
-    con.query(sql, products, (err, result) => {
+    con.query(sql, (err, result) => {
       if (err) throw err;
       if (result.length === 0) {
         res.json({ msg: "This business id does not exist" });
