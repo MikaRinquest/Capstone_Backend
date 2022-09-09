@@ -91,8 +91,8 @@ router.delete("/:id", (req, res) => {
 router.patch("/:id", (req, res) => {
   try {
     let sql = `UPDATE products SET ? WHERE p_id = ${req.params.id}`;
-    const { name, p_img, description, price, p_type } = req.body;
-    let product = { name, p_img, description, price, p_type };
+    const { name, p_img, description, price } = req.body;
+    let product = { name, p_img, description, price };
     con.query(sql, product, (err) => {
       if (err) {
         throw err;
