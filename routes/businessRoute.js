@@ -139,7 +139,7 @@ router.delete("/:id", (req, res) => {
 });
 
 // Edit a business
-router.put("/:id", (req, res) => {
+router.patch("/:id", (req, res) => {
   try {
     let sql = `UPDATE business SET ? where b_id = ${req.params.id}`;
     const { b_name, phone, email, password, b_img } = req.body;
