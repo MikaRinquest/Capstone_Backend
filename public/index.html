@@ -73,12 +73,12 @@
             <tr>
               <td>GET</td>
               <td>"/users/:id/cart"</td>
-              <td></td>
+              <td>Gets all items inside of the cart.</td>
             </tr>
             <tr>
               <td>POST</td>
               <td>"/users/:id/cart"</td>
-              <td>Gets all items inside of the cart.</td>
+              <td>Add to cart</td>
             </tr>
             <tr>
               <td>DELETE</td>
@@ -118,6 +118,28 @@
               <td>GET</td>
               <td>"/products/:id"</td>
               <td>Displays a single product with the specific id.</td>
+            </tr>
+            <tr>
+              <td>GET</td>
+              <td>"/products/product"</td>
+              <td>
+                Gets all products with a similiar business id to the business.
+              </td>
+            </tr>
+            <tr>
+              <td>POST</td>
+              <td>"/product/product/"</td>
+              <td>Adds a new product to website.</td>
+            </tr>
+            <tr>
+              <td>DELETE</td>
+              <td>"/products/product/:id</td>
+              <td>Deletes a product from the array.</td>
+            </tr>
+            <tr>
+              <td>PUT</td>
+              <td>"/products/product/:id"</td>
+              <td>Allows the business to edit a product.</td>
             </tr>
           </tbody>
         </table>
@@ -167,33 +189,6 @@
               <td>PUT</td>
               <td>"/business/:id"</td>
               <td>Edits the details of a business.</td>
-            </tr>
-            <tr>
-              <td>GET</td>
-              <td>"/business/products"</td>
-              <td>
-                Gets all products with a similiar business id to the business.
-              </td>
-            </tr>
-            <tr>
-              <td>GET</td>
-              <td>"/business/products/:id"</td>
-              <td>Gets a specific product.</td>
-            </tr>
-            <tr>
-              <td>POST</td>
-              <td>"/business/products/"</td>
-              <td>Adds a new product to website.</td>
-            </tr>
-            <tr>
-              <td>DELETE</td>
-              <td>"/business/products/:id</td>
-              <td>Deletes a product from the array.</td>
-            </tr>
-            <tr>
-              <td>PUT</td>
-              <td>"/business/products/:id"</td>
-              <td>Allows the business to edit a product.</td>
             </tr>
           </tbody>
         </table>
