@@ -141,17 +141,16 @@ router.delete("/:id", (req, res) => {
 // Edit a business
 router.patch("/:id", (req, res) => {
   try {
-    let sql = `UPDATE business SET ? where b_id = ${req.params.id}`;
-    const { b_name, phone, email, password, b_img } = req.body;
+    let sql = `UPDATE business SET ? where b_id = ${req.body.b_id}`;
+    const { b_id, b_name, phone,  b_img } = req.body;
 
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
 
     let business = {
+      b_id,
       b_name,
       phone,
-      email,
-      password: hash,
       b_img,
     };
     con.query(sql, business, (err) => {
