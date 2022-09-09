@@ -144,8 +144,7 @@ router.patch("/:id", (req, res) => {
     let sql = `UPDATE business SET ? where b_id = ${req.body.b_id}`;
     const { b_id, b_name, phone,  b_img } = req.body;
 
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(password, salt);
+
 
     let business = {
       b_id,
